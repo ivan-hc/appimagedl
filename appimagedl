@@ -5,11 +5,12 @@
 # Author: simonizor (simoniz0r)
 # License: MIT
 # Dependencies: appimageupdatetool, jq, wget
-
+# NOTE: this is a fork for "AM" Application Manager
 # Set default variables to be stored in config file on first run
+
 CONFIG_DIR="$HOME/.config/appimagedl"
 TARGET_DIR="/usr/local/bin"
-GET_DIR="$HOME/AppImages"
+GET_DIR="$HOME/.appimages"
 DOWNGRADE_LIMIT=5
 CLR_CLEAR="$(tput sgr0)"
 CLR_BLUE="$(tput setaf 4)"
@@ -83,7 +84,7 @@ function detectinterrupt() {
 # Will output error with command that was passed if both attempts fail
 function trywithoutsudo() {
     COMMAND="$@"
-    $COMMAND 2> /dev/null || sudo $COMMAND || { displaymessage "${CLR_RED}The following failed to execute:${CLR_CLEAR}" "$COMMAND"; cleanup "1"; }
+    $COMMAND 2> /dev/null || $COMMAND || { displaymessage "${CLR_RED}The following failed to execute:${CLR_CLEAR}" "$COMMAND"; cleanup "1"; }
 }
 
 # Function to save config settings for appimagedl
@@ -144,13 +145,6 @@ function saveconf() {
 # Without GITHUB_TOKEN, rate limit is 60/hour.
 # If rate limit reaches 0, error message is outputted and user is told when it resets
 function ratelimitcheck() {
-    if [ -z "$GITHUB_TOKEN" ]; then
-        wget -S --spider "https://api.github.com/rate_limit" -o "$CONFIG_DIR"/cache/rate.limit || { displaymessage "${CLR_RED}Rate Limit Check Failed${CLR_CLEAR}" "Github rate limit check failed! Exiting..."; cleanup "1"; }
-        echo "${CLR_GREEN}Github API rate limit: $(grep -m 1 '.*X-RateLimit-Remaining:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ")/60 until $(date -d@$(grep -m 1 '.*X-RateLimit-Reset:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ") +"%T, %F").${CLR_CLEAR}"
-    else
-        wget -S --spider --quiet --auth-no-challenge --header="Authorization: token "$GITHUB_TOKEN"" "https://api.github.com/rate_limit" -o "$CONFIG_DIR"/cache/rate.limit || { displaymessage "${CLR_RED}Rate Limit Check Failed${CLR_CLEAR}" "Github rate limit check failed! Exiting..."; cleanup "1"; }
-        echo "${CLR_GREEN}Github API rate limit : $(grep -m 1 '.*X-RateLimit-Remaining:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ")/5000 until $(date -d@$(grep -m 1 '.*X-RateLimit-Reset:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ") +"%T, %F")."
-    fi
     if [ "$(grep -m 1 '.*X-RateLimit-Remaining:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ")" = "0" ]; then
         displaymessage "${CLR_RED}Github API rate limit reached! Try again at $(date -d@$(grep -m 1 '.*X-RateLimit-Reset:*.' "$CONFIG_DIR"/cache/rate.limit | cut -f4 -d" ")).${CLR_CLEAR}" "If you haven't already, you can add your token to $CONFIG_DIR/appimagedl.conf to avoid hitting the rate limit."
         cleanup "1"
@@ -847,10 +841,6 @@ elif [ -f "$CONFIG_DIR"/cache/appimagedl.lock ]; then
 fi
 
 # Check to make sure all necessary dependencies are present
-if ! type appimageupdatetool >/dev/null 2>&1; then
-    MISSING_DEPS="TRUE"
-    displaymessage "${CLR_RED}Dependency Error${CLR_CLEAR}" "Missing appimageupdatetool!"
-fi
 if ! type jq >/dev/null 2>&1; then
     MISSING_DEPS="TRUE"
     displaymessage "${CLR_RED}Dependency Error${CLR_CLEAR}" "Missing jq!"
