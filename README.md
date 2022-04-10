@@ -55,7 +55,7 @@ GITHUB_TOKEN="YOURTOKEN"
 
 ## Enable a local $PATH to run the programs as binary files
 
-To run the AppImages from the command line as they are binary files (command `appimagedl download $PROGRAM`), add the following line at the end of your ~/.bashrc file:
+To run the AppImages from the command line (command `appimagedl download $PROGRAM`), add the following line at the end of your ~/.bashrc:
 
     export PATH=$PATH:$(xdg-user-dir USER)/.local/bin
 You can quickly do that using the following command:
