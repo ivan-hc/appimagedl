@@ -10,6 +10,21 @@ appimagedl is not responsible for bugs within AppImages that have been
 downloaded using appimagedl.  Please report any bugs that are specific to
 downloaded AppImages to their maintainers.
 
+## How to install
+
+    wget https://raw.githubusercontent.com/ivan-hc/appimagedl/master/appimagedl-install
+    chmod a+x ./appimagedl-install
+    sudo ./appimagedl-install
+
+## Enable a local $PATH to run the programs as binary files
+
+To run the AppImages from the command line (command `appimagedl download $PROGRAM`), add the following line at the end of your ~/.bashrc:
+
+    export PATH=$PATH:$(xdg-user-dir USER)/.local/bin
+You can quickly do that using the following command:
+
+    echo 'export PATH=$PATH:$(xdg-user-dir USER)/.local/bin' >> ./.bashrc
+
 ## Arguments
     
     list|l      - list all available AppImages
@@ -53,15 +68,19 @@ To use authenticated Github API checks with appimagedl, edit the following line 
 GITHUB_TOKEN="YOURTOKEN"
 ```
 
-## Enable a local $PATH to run the programs as binary files
+## How to uninstall
+To remove appimagedl run the following command:
 
-To run the AppImages from the command line (command `appimagedl download $PROGRAM`), add the following line at the end of your ~/.bashrc:
+    sudo /opt/appimagedl/remove
+To remove all the downloaded applications (using the `get` option), do:
 
-    export PATH=$PATH:$(xdg-user-dir USER)/.local/bin
-You can quickly do that using the following command:
+    rm -R ~/.AppImages
+To remove all the installed apps (using the `download` option), do:
 
-    echo 'export PATH=$PATH:$(xdg-user-dir USER)/.local/bin' >> ./.bashrc
+    rm -R ~/.local/bin/*
+To remove the configuration files:
 
+    rm -R ~/.config/appimagedl
 
 ## What is an [AppImage](http://appimage.org)?
 
