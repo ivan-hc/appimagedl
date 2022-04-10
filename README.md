@@ -53,7 +53,16 @@ To use authenticated Github API checks with appimagedl, edit the following line 
 GITHUB_TOKEN="YOURTOKEN"
 ```
 
+## Enable a local $PATH to run the programs as binary files
+
+To run the AppImages from the command line as they are binary files (command `appimagedl download $PROGRAM`), add the following line at the end of your ~/.bashrc file:
+
+    export PATH=$PATH:$(xdg-user-dir USER)/.local/bin
+You can quickly do that using the following command:
+
+    echo 'export PATH=$PATH:$(xdg-user-dir USER)/.local/bin' >> ./.bashrc
+
+
 ## What is an [AppImage](http://appimage.org)?
 
 An AppImage is a downloadable file for Linux that contains an application and everything the application needs to run (e.g., libraries, icons, fonts, translations, etc.) that cannot be reasonably expected to be part of each target system.
-
