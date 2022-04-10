@@ -9,8 +9,8 @@
 # Set default variables to be stored in config file on first run
 
 CONFIG_DIR="$HOME/.config/appimagedl"
-TARGET_DIR="/usr/local/bin"
-GET_DIR="$HOME/.appimages"
+TARGET_DIR="$HOME/.local/bin"
+GET_DIR="$HOME/.AppImages"
 DOWNGRADE_LIMIT=5
 CLR_CLEAR="$(tput sgr0)"
 CLR_BLUE="$(tput setaf 4)"
@@ -864,6 +864,7 @@ if [ ! -d "$CONFIG_DIR" ]; then
     mkdir "$CONFIG_DIR"/upgrades
     mkdir "$CONFIG_DIR"/downgrades
     mkdir "$CONFIG_DIR"/cache
+    mkdir -p "$HOME"/.local/bin
     saveconf
     updatelist
     echo "First run operations complete!"
