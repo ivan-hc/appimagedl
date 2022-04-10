@@ -66,3 +66,6 @@ You can quickly do that using the following command:
 ## What is an [AppImage](http://appimage.org)?
 
 An AppImage is a downloadable file for Linux that contains an application and everything the application needs to run (e.g., libraries, icons, fonts, translations, etc.) that cannot be reasonably expected to be part of each target system.
+
+## Related project
+#### "AM" Application Manager, at https://github.com/ivan-hc/AM-Application-Manager
